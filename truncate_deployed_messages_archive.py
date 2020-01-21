@@ -1,7 +1,7 @@
+#!/usr/bin/env python
+
 from datetime import date
 
-# import os
-# import datetime
 import subprocess
 import smtplib
 import time
@@ -16,7 +16,7 @@ cqlsh_path='/opt/app/cassandra/bin/cqlsh'
 cassandra_nodes='/opt/app/truncate_cron/cassandra_nodes.txt'
 nodetool_path='/opt/app/cassandra/bin/nodetool'
 truncate_cql='/opt/app/truncate_cron/truncate.cql'
-log_file='/home/schalla/truncate_cron/truncate_cron.log'
+log_file='/opt/app/truncate_cron/truncate_cron.log'
 
 #time to wait to run cleanup(seconds)
 TIME_TO_WAIT=10
@@ -70,22 +70,19 @@ def sendEmailNotification(SUBJECT, TEXT):
 def truncateTable(table_name):
     logger.debug("Inside truncateTable()")
     logger.debug("Table to truncate: {}".format(table_name))
-    CQL_STATEMENT='DESCRIBE TABLE ' + KEYSPACE + '."' + table_name + '";'
+    CQL_STATEMENT='TRUNCATE ' + KEYSPACE + '."' + table_name + '";'
     logger.debug("CQL_STATEMENT: {}".format(CQL_STATEMENT))
 
     with open(truncate_cql, 'w') as file:
         file.write(CQL_STATEMENT)
 
     try:
-        logger.debug("Inside subprocess call :")
         call_list = []
         call_list.append(cqlsh_path)
         call_list.append(socket.gethostname())
-        call_list.append('--username=cassdba')
-        call_list.append('--password=0z64R1a46S')
         call_list.append('-f')
-        call_list.append('truncate.cql')
-
+        call_list.append(truncate_cql)
+        logger.debug("Running CQL Truncate:")
         subprocess.call(call_list)
     except:
         event_subject = "Error running cql script on via cron to truncate " + table_name + " on " + TARGET_ENV
