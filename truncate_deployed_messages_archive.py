@@ -123,18 +123,20 @@ def getArchiveTableName():
         CURRENT_YEAR = today.strftime("%G")
         CURRENT_WEEK = today.strftime("%V")
         CURRENT_MONTH = today.strftime("%m")
+        print("Current Month : {}".format(CURRENT_MONTH))
 
 
-        # TEST
-        # CURRENT_MONTH="02"
+
 
         MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"]
 
-        if int(CURRENT_MONTH) < 5:
+        if int(CURRENT_MONTH) < 4:
             if int(CURRENT_MONTH) == 1:
                 PREVIOUS_YEAR = int(CURRENT_YEAR) - 1
                 logger.debug("Previous YEAR: {}".format(PREVIOUS_YEAR))
-                MONTH_TABLE_TO_TRUNCATE = MONTHS[-1:-5:-1][-1]
+                MONTH_TABLE_TO_TX = MONTHS[-1:-4:-1]
+                print("Month Table TX: {}".format(MONTH_TABLE_TO_TX))
+                MONTH_TABLE_TO_TRUNCATE = MONTHS[-1:-4:-1][-1]
                 logger.debug("Month Table to truncate: {}".format(MONTH_TABLE_TO_TRUNCATE))
                 TABLE_NAME= "DEPLOYED_MESSAGES_V2_" + str(PREVIOUS_YEAR) + "M" + str(MONTH_TABLE_TO_TRUNCATE)
                 logger.debug("Table to truncate: {}".format(TABLE_NAME))
@@ -143,7 +145,9 @@ def getArchiveTableName():
             if int(CURRENT_MONTH) == 2:
                 PREVIOUS_YEAR = int(CURRENT_YEAR) - 1
                 logger.debug("Previous YEAR: {}".format(PREVIOUS_YEAR))
-                MONTH_TABLE_TO_TRUNCATE = MONTHS[-1:-4:-1][-1]
+                MONTH_TABLE_TO_TX = MONTHS[-1:-3:-1]
+                print("Month Table TX: {}".format(MONTH_TABLE_TO_TX))
+                MONTH_TABLE_TO_TRUNCATE = MONTHS[-1:-3:-1][-1]
                 logger.debug("Month Table to truncate: {}".format(MONTH_TABLE_TO_TRUNCATE))
                 TABLE_NAME= "DEPLOYED_MESSAGES_V2_" + str(PREVIOUS_YEAR) + "M" + str(MONTH_TABLE_TO_TRUNCATE)
                 logger.debug("Table to truncate: {}".format(TABLE_NAME))
@@ -152,29 +156,22 @@ def getArchiveTableName():
             if int(CURRENT_MONTH) == 3:
                 PREVIOUS_YEAR = int(CURRENT_YEAR) - 1
                 logger.debug("Previous YEAR: {}".format(PREVIOUS_YEAR))
-                MONTH_TABLE_TO_TRUNCATE = MONTHS[-1:-3:-1][-1]
+                MONTH_TABLE_TO_TX = MONTHS[-1:-2:-1]
+                print("Month Table TX: {}".format(MONTH_TABLE_TO_TX))
+                MONTH_TABLE_TO_TRUNCATE = MONTHS[-1:-2:-1][0]
                 logger.debug("Month Table to truncate: {}".format(MONTH_TABLE_TO_TRUNCATE))
                 TABLE_NAME= "DEPLOYED_MESSAGES_V2_" + str(PREVIOUS_YEAR) + "M" + str(MONTH_TABLE_TO_TRUNCATE)
                 logger.debug("Table to truncate: {}".format(TABLE_NAME))
                 return TABLE_NAME
 
-            if int(CURRENT_MONTH) == 4:
-                PREVIOUS_YEAR = int(CURRENT_YEAR) - 1
-                logger.debug("Previous YEAR: {}".format(PREVIOUS_YEAR))
-                MONTH_TABLE_TO_TRUNCATE = MONTHS[-1:-2:-1][-1]
-                logger.debug("Month Table to truncate: {}".format(MONTH_TABLE_TO_TRUNCATE))
-                TABLE_NAME= "DEPLOYED_MESSAGES_V2_" + str(PREVIOUS_YEAR) + "M" + str(MONTH_TABLE_TO_TRUNCATE)
-                logger.debug("Table to truncate: {}".format(TABLE_NAME))
-                return TABLE_NAME
         else:
-            MONTH_TABLE_TO_TRUNCATE = MONTHS[int(CURRENT_MONTH)-5:int(CURRENT_MONTH)-1]
+            MONTH_TABLE_TO_TRUNCATE = MONTHS[int(CURRENT_MONTH)-4:int(CURRENT_MONTH)-1]
+            print("Month Table To Truncate: {}".format(MONTH_TABLE_TO_TRUNCATE))
             logger.debug(MONTH_TABLE_TO_TRUNCATE[0])
             logger.debug("Month Table to truncate: {}".format(MONTH_TABLE_TO_TRUNCATE[0]))
             TABLE_NAME = "DEPLOYED_MESSAGES_V2_" + str(CURRENT_YEAR) + "M" + str(MONTH_TABLE_TO_TRUNCATE[0])
             logger.debug("Table to truncate: {}".format(TABLE_NAME))
             return TABLE_NAME
-
-
 
 def main():
     logger.debug("Inside main()")
